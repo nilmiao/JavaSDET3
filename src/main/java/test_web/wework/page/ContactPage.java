@@ -18,7 +18,7 @@ public class ContactPage extends BasePage {
     By subDepartmentName = By.name("name");
     By okBtn = By.linkText("确定");
     By threePointsMenu = By.xpath("//li/ul/li/a/span");
-    By threePointsDelBtn=By.xpath("(//a[contains(text(),'删除')])[3]");
+    By threePointsDelBtn = By.xpath("(//a[contains(text(),'删除')])[3]");
 
     public ContactPage(RemoteWebDriver driver) {
         super(driver);
@@ -77,7 +77,7 @@ public class ContactPage extends BasePage {
         return this;
     }
 
-    public ContactPage delSubDepartment(String departmenName){
+    public ContactPage delSubDepartment(String departmenName) {
         click(By.linkText(departmenName));
         click(threePointsMenu);
         click(threePointsDelBtn);
