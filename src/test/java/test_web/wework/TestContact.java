@@ -18,26 +18,24 @@ public class TestContact {
     }
     @Test
     void testAddMember(){
-        String username=contact.addMember("3", "3", "15600534763").search("3").getUserName();
-        assertEquals(username, "3");
+        String username=contact.addMember("1", "1", "15600534761").search("1").getUserName();
+        assertEquals(username, "1");
     }
 
     @Test
     void testSearch(){
-        contact.search("3").delete();
+        contact.search("1").delete();
     }
 
     @Test
     void testImportFromFile(){
-        //todo: 中文名
         contact.importFromFile(this.getClass().getResource("/通讯录批量导入模板.xlsx"));
-
     }
 
     @AfterAll
     static void afterAll(){
         try {
-            Thread.sleep(20000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
