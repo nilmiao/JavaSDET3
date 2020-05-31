@@ -9,10 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class ContactPageTest {
     static MainPage main;
     static ContactPage contact;
+
     @BeforeAll
-    static void beforeAll(){
-        main=new MainPage();
-        contact=main.toContact();
+    static void beforeAll() {
+        main = new MainPage();
+        contact = main.toContact();
     }
 
     @Test
@@ -23,7 +24,7 @@ class ContactPageTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        assertEquals(contact.getSubDepartmentName(),("测试部门"));
+        assertEquals(contact.getSubDepartmentName(), ("测试部门"));
     }
 
 
@@ -33,7 +34,7 @@ class ContactPageTest {
     }
 
     @AfterAll
-    static void afterAll(){
+    static void afterAll() {
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
