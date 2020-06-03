@@ -17,7 +17,7 @@ public class BasePage {
     public BasePage() {
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("debuggerAddress", "127.0.0.1:9222");
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
@@ -27,7 +27,6 @@ public class BasePage {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
     }
-
 
     public void quit() {
         driver.quit();
@@ -47,5 +46,10 @@ public class BasePage {
     public void upload(By by, String path) {
         wait.until(ExpectedConditions.presenceOfElementLocated(by));
         driver.findElement(by).sendKeys(path);
+    }
+
+    public String getText(By by){
+        wait.until(ExpectedConditions.presenceOfElementLocated(by));
+        return driver.findElement(by).getText();
     }
 }

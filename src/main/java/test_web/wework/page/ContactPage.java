@@ -2,23 +2,25 @@ package test_web.wework.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.time.Duration;
+import java.util.Formatter;
 
 public class ContactPage extends BasePage {
     By addMember = By.linkText("添加成员");
     By username = By.name("username");
     By delete = By.linkText("删除");
     By addSubDepartmentBtn = By.linkText("添加子部门");
-    By subDepartmentName = By.name("name");
+    By subName = By.name("name");
     By okBtn = By.linkText("确定");
     By threePointsMenu = By.xpath("//li/ul/li/a/span");
     By threePointsDelBtn = By.xpath("(//a[contains(text(),'删除')])[3]");
+    By addBtn = By.cssSelector(".member_colLeft_top_addBtn");
+    By tagNameBtn = By.linkText("标签");
+    By tagThreePointsMenu = By.cssSelector(".ww_icon_MoreBlue");
+    By innerName=By.cssSelector(".ww_commonCntHead_title_inner_text");
 
     public ContactPage(RemoteWebDriver driver) {
         super(driver);
@@ -44,7 +46,7 @@ public class ContactPage extends BasePage {
     }
 
     public String getUserName() {
-        return driver.findElement(By.cssSelector(".member_display_cover_detail_name")).getText();
+        return getText(By.cssSelector(".member_display_cover_detail_name"));
     }
 
     public ContactPage delete() {
@@ -72,7 +74,7 @@ public class ContactPage extends BasePage {
 
     public ContactPage addSubDepartment(String departmentName) {
         click(addSubDepartmentBtn);
-        sendKeys(subDepartmentName, departmentName);
+        sendKeys(subName, departmentName);
         click(okBtn);
         return this;
     }
@@ -86,7 +88,43 @@ public class ContactPage extends BasePage {
     }
 
     public String getSubDepartmentName() {
-        String driverName = driver.findElement(By.id("party_name")).getText();
+        String driverName = getText(By.id("party_name"));
         return driverName;
+    }
+
+    public ContactPage addTag(String tagName){
+        if (!driver.findElements(this.tagNameBtn).isEmpty()){
+            click(tagNameBtn);
+            click(addBtn);
+            sendKeys(subName, tagName);
+            click(okBtn);
+            return this;
+        }else {
+            click(addBtn);
+            click(tagNameBtn);
+            sendKeys(subName, tagName);
+            click(okBtn);
+            return this;
+        }
+    }
+
+    public String getTagName(){
+        String tagName = getText(this.innerName);
+        return tagName;
+    }
+
+    public ContactPage delTag(String tagName) {
+        StringBuilder tagNewName = new StringBuilder();
+        Formatter fmt = new Formatter(tagNewName);
+        fmt.format("//li[contains(.,'%s')]", tagName);
+        if (!driver.findElements(this.tagNameBtn).isEmpty()){
+            click(tagNameBtn);
+        }
+        click(By.xpath(tagNewName.toString()));
+        click(tagNameBtn);
+        click(tagThreePointsMenu);
+        click(delete);
+        click(okBtn);
+        return this;
     }
 }
