@@ -1,6 +1,5 @@
 package test_app.xueqiu.page;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
@@ -39,7 +38,10 @@ public class MainPage {
         return new SearchPage(driver);
     }
 
-    public void toStock() {
+    public StockPage toStock() {
+        MobileElement element = (MobileElement) driver.findElement(By.name("行情"));
+        element.click();
+        return new StockPage(driver);
 
     }
 }

@@ -35,10 +35,10 @@ public class SearchPage{
 
     public List<String> getSearchList() {
         List<String> nameList = new ArrayList<>();
-        for(Object element: driver.findElements(nameLocator)){
-            nameList.add(((WebElement)element).getText());
-        }
-//        driver.findElements(nameLocator).forEach(name->nameList.add(((WebElement)name).getText()));
+//        for(Object element: driver.findElements(nameLocator)){
+//            nameList.add(((WebElement)element).getText());
+//        }
+        driver.findElements(nameLocator).forEach(name->nameList.add(((WebElement)name).getText()));
         return nameList;
     }
 
