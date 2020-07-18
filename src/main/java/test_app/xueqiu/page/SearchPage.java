@@ -1,49 +1,74 @@
 package test_app.xueqiu.page;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import sun.jvm.hotspot.debugger.Page;
-import test_web.wework.page.BasePage;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Miao on 2020/6/7
  */
-public class SearchPage{
-    private AndroidDriver driver;
+public class SearchPage extends BasePage{
     private By nameLocator=By.id("name");
 
-    public SearchPage() {
-    }
-
     public SearchPage(AndroidDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    public SearchPage search(String keyword) {
-        MobileElement el2 = (MobileElement) driver.findElement(By.id("com.xueqiu.android:id/search_input_text"));
-        el2.sendKeys(keyword);
+    @Step("按关键字搜索")
+    public SearchPage search(String keyword){
+        sendKeys(By.id("com.xueqiu.android:id/search_input_text"),keyword);
         return this;
+
     }
 
-    public List<String> getSearchList() {
-        List<String> nameList = new ArrayList<>();
-//        for(Object element: driver.findElements(nameLocator)){
-//            nameList.add(((WebElement)element).getText());
-//        }
+    @Step("获取搜索匹配的列表")
+    public List<String> getSearchList(){
+        List<String> nameList=new ArrayList<>();
         driver.findElements(nameLocator).forEach(name->nameList.add(((WebElement)name).getText()));
         return nameList;
     }
 
-    public double getPrice() {
-        driver.findElement(nameLocator).click();
-        return Double.valueOf(driver.findElement(By.id("current_price")).getText());
+    @Step("选择目标搜索结果")
+    public SearchPage selectSearchResult(String name, String code){
+        //xpath改进
+        List<MobileElement> nameElements = driver.findElements(nameLocator);
+        List<MobileElement> codeElements = driver.findElements(By.id("com.xueqiu.android:id/code"));
+        for (int i = 0; i < nameElements.size(); i++) {
+            boolean isContainName = nameElements.get(i).getText().contains(name);
+            boolean isEqualCode = codeElements.get(i).getText().equals(code);
+            if (isContainName && isEqualCode){
+                nameElements.get(i).click();
+                break;
+            }
+        }
+        return this;
+    }
+
+
+    @Step("获取当前价格")
+    public double getPrice(){
+        click(nameLocator);
+        return Double.parseDouble(getText(By.id("current_price")));
+    }
+
+    @Step("选择并添加股票")
+    public void addFirstSearchResult(){
+        //点击第一条搜索结果
+        findElementsClick(nameLocator,0);
+        //点击第一条的加入自选
+        click(By.id("com.xueqiu.android:id/follow_btn"));
+        //点击取消
+        click(By.id("com.xueqiu.android:id/action_close"));
+    }
+
+    @Step("取消搜索")
+    public void quitSearch(){
+        click(By.id("com.xueqiu.android:id/action_close"));
     }
 }

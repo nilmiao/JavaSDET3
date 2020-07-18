@@ -2,11 +2,17 @@ package test_app.xueqiu.page;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Miao on 2020/6/7
@@ -14,43 +20,61 @@ import java.util.List;
  * 添加三只股票
  */
 
-public class StockPage {
-    private AndroidDriver driver;
-    private By nameLocator = By.id("name");
-
-    public StockPage() {
-    }
-
+public class StockPage extends BasePage {
     public StockPage(AndroidDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
-    public StockPage searchButon() {
-        MobileElement el2 = (MobileElement) driver.findElement(By.id("com.xueqiu.android:id/search"));
-        el2.click();
-        return this;
+    @Step("删除行情所有自选股")
+    public void delAllStock() {
+        //进入管理自选股股
+        click(By.id("com.xueqiu.android:id/edit_group"));
+        //点击全选
+        click(By.id("com.xueqiu.android:id/check_all"));
+        //点击删除自选
+        click(By.id("com.xueqiu.android:id/cancel_follow"));
+        //点击确定
+        click(By.id("com.xueqiu.android:id/tv_right"));
+        //点击完成
+        click(By.id("com.xueqiu.android:id/action_close"));
     }
 
-    public StockPage search(String keyword) {
-        MobileElement el2 = (MobileElement) driver.findElement(By.id("com.xueqiu.android:id/search_input_text"));
-        el2.sendKeys(keyword);
-        return this;
-    }
-
-    public List<String> getSearchList() {
-        List<String> nameList = new ArrayList<>();
-        for (Object element : driver.findElements(nameLocator)) {
-            nameList.add(((WebElement) element).getText());
+    public boolean isEmpty(){
+        try {
+            driver.findElementById("com.xueqiu.android:id/fl_empty_container").isDisplayed();
         }
-//        driver.findElements(nameLocator).forEach(name->nameList.add(((WebElement)name).getText()));
+        catch (NoSuchElementException e){
+            return false;
+        }
+        return true;
+    }
+
+
+    @Step("获取行情所有自选股")
+    public List<String> getAllStock(){
+        click(By.id("com.xueqiu.android:id/edit_group"));
+        List<MobileElement> StockList = driver.findElements(By.id("com.xueqiu.android:id/stockName"));
+        List<String> nameList;
+        if (StockList.size()>0){
+            nameList = StockList.stream().map(RemoteWebElement::getText).collect(Collectors.toList());
+        }else {
+            nameList = Arrays.asList("no such elements");
+        }
+        click(By.id("com.xueqiu.android:id/action_close"));
         return nameList;
     }
 
-    public StockPage addStock(){
-        MobileElement el5 = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.LinearLayout/androidx.viewpager.widget.ViewPager/android.widget.RelativeLayout/android.view.ViewGroup/androidx.recyclerview.widget.RecyclerView/android.widget.LinearLayout[1]/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout[1]/android.widget.RelativeLayout/android.widget.LinearLayout[3]/android.widget.TextView");
-        el5.click();
+    public StockPage addStock(String stockName){
+        WebElement element= (WebElement) driver.findElementsById("com.xueqiu.android:id/action_search").get(0);
+        element.click();
+        SearchPage searchPage=new SearchPage(driver);
+        searchPage.search(stockName).addFirstSearchResult();
         return this;
     }
 
+    @Step("获取自选股列表第一条股票名字")
+    public String getFirstStockName(){
+        return findElementsGetText(By.id("com.xueqiu.android:id/portfolio_stockName"),0);
+    }
 
 }
