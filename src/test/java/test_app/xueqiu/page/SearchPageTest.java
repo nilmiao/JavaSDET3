@@ -33,7 +33,7 @@ class SearchPageTest {
     }
 
     @AfterAll
-    static void tearDown(){
+    static void AfterAll(){
         searchPage.quit();
     }
 }

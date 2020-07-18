@@ -1,9 +1,12 @@
 package test_app.xueqiu.page;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,7 +16,8 @@ import java.util.concurrent.TimeUnit;
  * @author Miao on 2020/7/18
  */
 public class BasePage {
-    AndroidDriver driver;
+    AppiumDriver<MobileElement> driver;
+    WebDriverWait wait;
 
     public BasePage() {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
@@ -25,17 +29,17 @@ public class BasePage {
         desiredCapabilities.setCapability("udid", "3EP7N19215006078");
         desiredCapabilities.setCapability("appActivity", ".view.WelcomeActivityAlias");
 //        desiredCapabilities.setCapability("dontStopAppOnReset", true);
-        URL remoteUrl =null;
+        URL remoteUrl = null;
         try {
             remoteUrl = new URL("http://127.0.0.1:4723/wd/hub");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        this.driver = new AndroidDriver(remoteUrl, desiredCapabilities);
+        this.driver = new AppiumDriver(remoteUrl, desiredCapabilities);
         this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
-    public BasePage(AndroidDriver driver){
+    public BasePage(AppiumDriver<MobileElement> driver) {
         this.driver = driver;
     }
 
@@ -43,22 +47,31 @@ public class BasePage {
         this.driver.quit();
     }
 
+    public MobileElement find(By by) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(by));
+        return driver.findElement(by);
+    }
+
     public void click(By by) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(by));
         this.driver.findElement(by).click();
     }
 
     public void findElementsClick(By by, int num) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(by));
         MobileElement element = (MobileElement) this.driver.findElements(by).get(num);
         element.click();
     }
 
     public String findElementsGetText(By by, int num) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(by));
         MobileElement element = (MobileElement) this.driver.findElements(by).get(num);
         return element.getText();
     }
 
     public boolean byElementIsExist(By by) {
         try {
+            wait.until(ExpectedConditions.presenceOfElementLocated(by));
             this.driver.findElement(by);
             return true;
         } catch (Exception e) {
@@ -70,9 +83,11 @@ public class BasePage {
         this.driver.findElement(by).sendKeys(text);
     }
 
-    public String getText(By by){
+    public String getText(By by) {
+        wait.until(ExpectedConditions.presenceOfElementLocated(by));
         return this.driver.findElement(by).getText();
     }
+
     public void switchContext(String ctx) {
         this.driver.getContextHandles().forEach(context -> {
             if (context.toString().contains(ctx)) {
@@ -81,6 +96,9 @@ public class BasePage {
         });
     }
 
+    public void waitElemnt(){
+
+    }
     public void switchWindowHandle(String by) {
         Object win = driver.getWindowHandles().stream().filter(w -> {
             driver.switchTo().window(w);

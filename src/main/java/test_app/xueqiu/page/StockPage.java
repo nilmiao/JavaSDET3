@@ -1,15 +1,12 @@
 package test_app.xueqiu.page;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.android.AndroidDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
 
-import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +18,7 @@ import java.util.stream.Collectors;
  */
 
 public class StockPage extends BasePage {
-    public StockPage(AndroidDriver driver) {
+    public StockPage(AppiumDriver<MobileElement> driver) {
         super(driver);
     }
 
@@ -65,7 +62,7 @@ public class StockPage extends BasePage {
     }
 
     public StockPage addStock(String stockName){
-        WebElement element= (WebElement) driver.findElementsById("com.xueqiu.android:id/action_search").get(0);
+        MobileElement element= driver.findElementsById("com.xueqiu.android:id/action_search").get(0);
         element.click();
         SearchPage searchPage=new SearchPage(driver);
         searchPage.search(stockName).addFirstSearchResult();

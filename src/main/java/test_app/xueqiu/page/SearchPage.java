@@ -1,10 +1,9 @@
 package test_app.xueqiu.page;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.android.AndroidDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 public class SearchPage extends BasePage{
     private By nameLocator=By.id("name");
 
-    public SearchPage(AndroidDriver driver) {
+    public SearchPage(AppiumDriver<MobileElement> driver) {
         super(driver);
     }
 
@@ -30,7 +29,7 @@ public class SearchPage extends BasePage{
     @Step("获取搜索匹配的列表")
     public List<String> getSearchList(){
         List<String> nameList=new ArrayList<>();
-        driver.findElements(nameLocator).forEach(name->nameList.add(((WebElement)name).getText()));
+        driver.findElements(nameLocator).forEach(name->nameList.add((name).getText()));
         return nameList;
     }
 
