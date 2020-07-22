@@ -19,6 +19,7 @@ public class BasePage {
     WebDriverWait wait;
     String packageName;
     String activityName;
+    private final int timeOutInSecondsDefault = 60;
 
     public BasePage(String packageName, String activityName) {
         this.packageName = packageName;
@@ -46,11 +47,12 @@ public class BasePage {
             e.printStackTrace();
         }
         this.driver = new AppiumDriver(remoteUrl, desiredCapabilities);
-        this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        this.driver.manage().timeouts().implicitlyWait(timeOutInSecondsDefault, TimeUnit.SECONDS);
     }
 
     public BasePage(AppiumDriver<MobileElement> driver) {
         this.driver = driver;
+        wait = new WebDriverWait(driver, timeOutInSecondsDefault);
     }
 
     public void quit() {
@@ -62,9 +64,22 @@ public class BasePage {
         return driver.findElement(by);
     }
 
+    public MobileElement find(String text) {
+        return driver.findElement(byText(text));
+
+    }
+
+
     public void click(By by) {
-        wait.until(ExpectedConditions.presenceOfElementLocated(by));
-        this.driver.findElement(by).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(by)).click();
+    }
+
+    public void click(String text) {
+        find(text).click();
+    }
+
+    public By byText(String text) {
+        return By.xpath("//*[@text='" + text + "']");
     }
 
     public void findElementsClick(By by, int num) {
@@ -110,9 +125,6 @@ public class BasePage {
 
     }
 
-    public void findxpath(){
-
-    }
 
     public void switchWindowHandle(String by) {
         Object win = driver.getWindowHandles().stream().filter(w -> {

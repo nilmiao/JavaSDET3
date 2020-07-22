@@ -12,15 +12,21 @@ import java.util.stream.Collectors;
  * @author Miao on 2020/7/20
  */
 public class DayWayPage extends BasePage{
+    //todo:多版本appp、多平台定位符通常有差别
+    private final By taskList = By.id("gg_");
+    private final By add = By.id("gym");
+    private final By taskName = By.id("b2k");
+    private final By save = byText("保存");
+
 
     public DayWayPage(AppiumDriver<MobileElement> driver) {
         super(driver);
     }
 
     public DayWayPage add(String name, String time){
-        click(By.id("gq0"));
-        sendKeys(By.id(""));
-        click();
+        click(add);
+        sendKeys(taskName,name);
+        click(save);
         return this;
     }
 
@@ -28,7 +34,7 @@ public class DayWayPage extends BasePage{
         if(day != null){
             // todo 选择日期
         }
-        return driver.findElements().stream().map(x->x.getText()).collect(Collectors.toList());
+        return driver.findElements(taskList).stream().map(x->x.getText()).collect(Collectors.toList());
 
     }
 }
