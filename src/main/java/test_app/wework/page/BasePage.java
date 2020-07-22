@@ -31,12 +31,13 @@ public class BasePage {
     public void startApp(String packageName, String activityName) {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.setCapability("platformName", "Android");
-        desiredCapabilities.setCapability("platformVersion", "10.0");
+        desiredCapabilities.setCapability("platformVersion", "10.1");
         desiredCapabilities.setCapability("deviceName", "P20");
         desiredCapabilities.setCapability("noReset", true);
         desiredCapabilities.setCapability("appPackage", packageName);
         desiredCapabilities.setCapability("udid", "3EP7N19215006078");
         desiredCapabilities.setCapability("appActivity", activityName);
+//        desiredCapabilities.setCapability("skipLogcatCapture",true);
 //        desiredCapabilities.setCapability("dontStopAppOnReset", true);
         URL remoteUrl = null;
         try {
@@ -106,6 +107,10 @@ public class BasePage {
     }
 
     public void waitElemnt() {
+
+    }
+
+    public void findxpath(){
 
     }
 
