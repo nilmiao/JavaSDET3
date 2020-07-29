@@ -6,7 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+//日历的测试完善
+//代办
+//汇报日报 周报
 class DayWayPageTest {
     private static Wework wework;
 
@@ -25,7 +27,7 @@ class DayWayPageTest {
 
     @Test
     void add() {
-       assertTrue(wework.DayWay().add("上班打卡",null).GetDayWay(null).contains("上班打卡"));
+        assertTrue(wework.DayWay().add("上班打卡", null).GetDayWay(null).contains("上班打卡"));
     }
 
     @Test
