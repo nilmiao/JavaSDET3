@@ -28,6 +28,8 @@ class BasePageTest {
 
     @Test
     void run() {
+        UIAuto uiauto = basePage.load("/test_framework/uiauto.yaml");
+        basePage.run(uiauto);
     }
 
     @Test

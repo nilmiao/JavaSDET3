@@ -1,11 +1,25 @@
-name: xxx
-description: xxx
+#name: xxx
+#description: xxx
 steps:
-  - method: click
-    params: [1,2,3]
-  - action: click
-    by: id
-    locator: search
-  - action: click
-    id: click
+#  - id: locator
+#  # 基本自动化领域模型
+#  # 业务模型
+## 通用方法
+#  - method: click
+#    params: [1,2,3]
+## 通用方法加参数
+#  - method: click
+#    params:
+#      by: id
+#      value: search
+## 简化格式
+#  - by: id
+#    value: search
+#    action: click
+    # 进一步简化,如果by只是单个的字符串，可以进一步简化
+  - id: search
+    action: getText
+    key: search_text
+  - id: search
+    sendKeys: "hogwarts"
   - click: {id: search}
