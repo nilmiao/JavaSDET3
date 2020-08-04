@@ -1,11 +1,13 @@
-package test_app.wework.page;
+package test_app.xueqiu.page;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import test_framework.BasePage;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,31 +16,19 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Miao on 2020/7/18
  */
-public class BasePage {
+public class AppBasePage extends BasePage {
     AppiumDriver<MobileElement> driver;
     WebDriverWait wait;
-    String packageName;
-    String activityName;
-    private final int timeOutInSecondsDefault = 60;
 
-    public BasePage(String packageName, String activityName) {
-        this.packageName = packageName;
-        this.activityName = activityName;
-        startApp(this.packageName, this.activityName);
-
-    }
-
-
-    public void startApp(String packageName, String activityName) {
+    public AppBasePage() {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.setCapability("platformName", "Android");
-        desiredCapabilities.setCapability("platformVersion", "10.1");
-        desiredCapabilities.setCapability("deviceName", "P20");
+        desiredCapabilities.setCapability("platformVersion", "10.0");
+        desiredCapabilities.setCapability("deviceName", "P30");
         desiredCapabilities.setCapability("noReset", true);
-        desiredCapabilities.setCapability("appPackage", packageName);
+        desiredCapabilities.setCapability("appPackage", "com.xueqiu.android");
         desiredCapabilities.setCapability("udid", "3EP7N19215006078");
-        desiredCapabilities.setCapability("appActivity", activityName);
-//        desiredCapabilities.setCapability("skipLogcatCapture",true);
+        desiredCapabilities.setCapability("appActivity", ".view.WelcomeActivityAlias");
 //        desiredCapabilities.setCapability("dontStopAppOnReset", true);
         URL remoteUrl = null;
         try {
@@ -47,12 +37,11 @@ public class BasePage {
             e.printStackTrace();
         }
         this.driver = new AppiumDriver(remoteUrl, desiredCapabilities);
-        this.driver.manage().timeouts().implicitlyWait(timeOutInSecondsDefault, TimeUnit.SECONDS);
+        this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
-    public BasePage(AppiumDriver<MobileElement> driver) {
+    public AppBasePage(AppiumDriver<MobileElement> driver) {
         this.driver = driver;
-        wait = new WebDriverWait(driver, timeOutInSecondsDefault);
     }
 
     public void quit() {
@@ -64,22 +53,9 @@ public class BasePage {
         return driver.findElement(by);
     }
 
-    public MobileElement find(String text) {
-        return driver.findElement(byText(text));
-
-    }
-
-
     public void click(By by) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(by)).click();
-    }
-
-    public void click(String text) {
-        find(text).click();
-    }
-
-    public By byText(String text) {
-        return By.xpath("//*[@text='" + text + "']");
+        wait.until(ExpectedConditions.presenceOfElementLocated(by));
+        this.driver.findElement(by).click();
     }
 
     public void findElementsClick(By by, int num) {
@@ -121,11 +97,9 @@ public class BasePage {
         });
     }
 
-    public void waitElemnt() {
+    public void waitElemnt(){
 
     }
-
-
     public void switchWindowHandle(String by) {
         Object win = driver.getWindowHandles().stream().filter(w -> {
             driver.switchTo().window(w);

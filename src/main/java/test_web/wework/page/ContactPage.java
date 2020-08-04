@@ -8,7 +8,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Formatter;
 
-public class ContactPage extends BasePage {
+public class ContactPage extends WebBasePage {
     By addMember = By.linkText("添加成员");
     By username = By.name("username");
     By delete = By.linkText("删除");

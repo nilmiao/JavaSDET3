@@ -7,12 +7,11 @@ import org.openqa.selenium.By;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Miao on 2020/6/7
  */
-public class SearchPage extends BasePage {
+public class SearchPage extends AppBasePage {
     private By nameLocator = By.id("name");
 
     public SearchPage(AppiumDriver<MobileElement> driver) {

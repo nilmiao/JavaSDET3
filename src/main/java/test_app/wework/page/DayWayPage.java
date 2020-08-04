@@ -4,14 +4,13 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import org.openqa.selenium.By;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * @author Miao on 2020/7/20
  */
-public class DayWayPage extends BasePage{
+public class DayWayPage extends AppBasePage {
     //todo:多版本appp、多平台定位符通常有差别
     private final By taskList = By.id("gg_");
     private final By add = By.id("gym");

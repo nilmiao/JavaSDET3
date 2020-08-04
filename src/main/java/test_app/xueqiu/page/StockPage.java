@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * 添加三只股票
  */
 
-public class StockPage extends BasePage {
+public class StockPage extends AppBasePage {
     public StockPage(AppiumDriver<MobileElement> driver) {
         super(driver);
     }

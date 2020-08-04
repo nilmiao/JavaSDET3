@@ -1,16 +1,12 @@
 package test_app.xueqiu.page;
 
-import io.appium.java_client.MobileElement;
-import io.appium.java_client.android.AndroidDriver;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-
-import java.net.MalformedURLException;
 
 /**
  * @author Miao on 2020/6/7
  */
-public class MainPage extends BasePage {
+public class MainPage extends AppBasePage {
     public MainPage(){
     }
 

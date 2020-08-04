@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 /**
  * @author Miao on 2020/7/20
  */
-public class Wework extends BasePage{
+public class Wework extends AppBasePage {
     public Wework() {
         super("com.tencent.wework", ".launch.WwMainActivity");
     }

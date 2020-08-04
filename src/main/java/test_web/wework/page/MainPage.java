@@ -8,9 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.StringTokenizer;
-import java.util.concurrent.TimeUnit;
 
-public class MainPage extends BasePage{
+public class MainPage extends WebBasePage {
 
     public MainPage() {
         super();
