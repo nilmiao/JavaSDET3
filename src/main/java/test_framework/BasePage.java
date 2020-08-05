@@ -10,7 +10,7 @@ import java.util.HashMap;
  * @author Miao on 2020/7/29
  */
 
-// 自动化领域建模
+// 自动化领域建模 完成get attribute 获取文本 的封装
 public class BasePage {
     public void click(HashMap<String, Object> map) {
         System.out.println("click");

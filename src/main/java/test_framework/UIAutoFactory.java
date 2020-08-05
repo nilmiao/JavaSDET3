@@ -6,7 +6,7 @@ import test_web.wework.page.WebBasePage;
 /**
  * @author Miao on 2020/8/4
  */
-public class Factory {
+public class UIAutoFactory {
     public static BasePage create(String driverName){
         if(driverName.equals("web") || driverName.equals("selenium")){
             return new WebBasePage();
