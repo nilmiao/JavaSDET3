@@ -80,8 +80,12 @@ public class WebBasePage extends BasePage {
     @Override
     public void action(HashMap<String, Object> m) {
         super.action(m);
-        if(m.get("action").toString().toLowerCase().equals("get")){
+        String action = m.get("action").toString().toLowerCase();
+        if(action.equals("get")){
             driver.get(m.get("url").toString());
+        }else {
+            System.out.println("error get");
         }
+
     }
 }

@@ -33,13 +33,16 @@ class BasePageTest {
     }
 
     @Test
-    void load() {
-        UIAuto uiAuto = basePage.load("/test_framework/uiauto.yaml");
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            System.out.println(mapper.writeValueAsString(uiAuto));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+    void load() throws JsonProcessingException {
+        UIAuto uiauto=basePage.load("/test_framework/uiauto.yaml");
+        ObjectMapper mapper=new ObjectMapper();
+        System.out.println(mapper.writeValueAsString(uiauto));
+    }
+
+    @Test
+    void runPOM(){
+        basePage.loadPages("src/main/resources/test_framework");
+        UIAuto uiauto=basePage.load("/test_framework/webauto3.yaml");
+        basePage.run(uiauto);
     }
 }

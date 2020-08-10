@@ -42,6 +42,7 @@ public class WebTest {
         Arrays.asList(
                 "/test_framework/webauto.yaml",
                 "/test_framework/webauto1.yaml"
+//                "/test_framework/webauto3.yaml"
         ).stream().forEach(path -> {
             UIAuto uiAuto = basePage.load(path);
             uiAuto.description = path;
