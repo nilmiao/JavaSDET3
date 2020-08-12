@@ -32,7 +32,9 @@ public class WebViewTest {
         desiredCapabilities.setCapability("dontStopAppOnReset", "true");
 
 //        desiredCapabilities.setCapability("chromedriverExecutable", "/Users/seveniruby/projects/chromedriver/72/chromedriver");
-
+// todo 采用webview方式实现（推荐使用模拟器，搞定环境是最难的，所以第一节课不讲那么快）
+//
+// todo 交易 A股开户 输入手机号 验证码 立即开户
         URL remoteUrl = new URL("http://127.0.0.1:4723/wd/hub");
 
         driver = new AndroidDriver(remoteUrl, desiredCapabilities);
