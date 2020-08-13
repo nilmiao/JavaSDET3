@@ -31,7 +31,7 @@ public class WebViewTest {
 //        desiredCapabilities.setCapability("skipLogcatCapture", "true");
         desiredCapabilities.setCapability("dontStopAppOnReset", "true");
 
-//        desiredCapabilities.setCapability("chromedriverExecutable", "/Users/seveniruby/projects/chromedriver/72/chromedriver");
+        desiredCapabilities.setCapability("chromedriverExecutable", "/Users/miaobohang/FunWorker/test_files/83/chromedriver");
 // todo 采用webview方式实现（推荐使用模拟器，搞定环境是最难的，所以第一节课不讲那么快）
 //
 // todo 交易 A股开户 输入手机号 验证码 立即开户
@@ -73,7 +73,7 @@ public class WebViewTest {
         Object[] array = driver.getWindowHandles().toArray();
         driver.switchTo().window(array[array.length - 1].toString());
 
-        driver.findElement(By.cssSelector(".trade_home_info_3aI")).click();
+//        driver.findElement(By.cssSelector(".trade_home_info_3aI")).click();
 
     }
 
