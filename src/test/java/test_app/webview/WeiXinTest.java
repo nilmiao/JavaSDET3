@@ -3,16 +3,19 @@ package test_app.webview;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,16 +31,21 @@ public class WeiXinTest {
         desiredCapabilities.setCapability("platformName", "android");
         desiredCapabilities.setCapability("deviceName", "mmm");
         desiredCapabilities.setCapability("appPackage", "com.tencent.mm");
-        desiredCapabilities.setCapability("appActivity", "com.tencent.mm.ui.LauncherUI");
+        desiredCapabilities.setCapability("appActivity", "com.tmapping.jsonencent.mm.ui.LauncherUI");
         //高危操作，如果设置错误，聊天记录会被清空
         desiredCapabilities.setCapability("noReset", "true");
 //        desiredCapabilities.setCapability("adbPort", "5038");
 //        desiredCapabilities.setCapability("skipLogcatCapture", "true");
         desiredCapabilities.setCapability("dontStopAppOnReset", "true");
-
+        // 简单粗暴的方案
         desiredCapabilities.setCapability("chromedriverExecutable", "/Users/miaobohang/FunWorker/test_files/83/chromedriver");
-// todo 采用webview方式实现（推荐使用模拟器，搞定环境是最难的，所以第一节课不讲那么快）
-//
+        //完善的版本选择方案，不过会优先找android webview默认实现
+//        desiredCapabilities.setCapability("chromedriverExecutableDir",
+//                "/Users/seveniruby/projects/chromedriver/chromedrivers");
+//        desiredCapabilities.setCapability("chromedriverChromeMappingFile",
+//                "/Users/seveniruby/projects/Java3/src/main/resources/mapping.json");
+        //打印更多chromedriver的log方便定位问题
+        desiredCapabilities.setCapability("showChromedriverLog", true);
 // todo 交易 A股开户 输入手机号 验证码 立即开户
         URL remoteUrl = new URL("http://127.0.0.1:4723/wd/hub");
 
@@ -52,7 +60,26 @@ public class WeiXinTest {
     @Test
     public void wxmicroApplication() {
         Dimension size = driver.manage().window().getSize();
-        new TouchAction<>(driver).longPress(PointOption.point(size.width / 2, size.height / 2)).moveTo(PointOption.point(size.width, size.height)).perform();
+        new TouchAction<>(driver)
+                .longPress(
+                        LongPressOptions.longPressOptions()
+                                .withDuration(Duration.ofSeconds(2))
+                                .withPosition(PointOption.point(size.width / 2, size.height / 2)))
+                .moveTo(PointOption.point(size.width / 2, size.height / 10 * 9))
+                .release()
+                .perform();
+        driver.findElement(By.className("android.widget.EditText")).click();
+        driver.findElement(By.xpath("//*[@text='取消']"));
+        driver.findElement(By.className("android.widget.EditText")).sendKeys("雪球");
+        driver.findElement(By.className("android.widget.Buttion")).click();
+        driver.getContextHandles().stream().forEach(context -> {
+            System.out.println(context.toString());
+        });
+
+        String webview = driver.getContextHandles().stream()
+                .filter(context->context.toString().contains("WEBVIEW_xweb")).findFirst().get().toString();
+        System.out.println(webview);
+        driver.context(webview);
 
     }
 
