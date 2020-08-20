@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
@@ -34,11 +35,26 @@ public class WeiXinTest {
         desiredCapabilities.setCapability("appActivity", "com.tmapping.jsonencent.mm.ui.LauncherUI");
         //高危操作，如果设置错误，聊天记录会被清空
         desiredCapabilities.setCapability("noReset", "true");
-//        desiredCapabilities.setCapability("adbPort", "5038");
-//        desiredCapabilities.setCapability("skipLogcatCapture", "true");
+        desiredCapabilities.setCapability("adbPort", "5038");
+        //
+        desiredCapabilities.setCapability("skipLogcatCapture", "true");
         desiredCapabilities.setCapability("dontStopAppOnReset", "true");
         // 简单粗暴的方案
         desiredCapabilities.setCapability("chromedriverExecutable", "/Users/miaobohang/FunWorker/test_files/83/chromedriver");
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.setExperimentalOption("androidProcess", "com.tencent.mm:appbrand0");
+        desiredCapabilities.setCapability("goog:chromeOptions", chromeOptions);
+        //必须得加上，因为默认生成browserName=chrome的设置，需要去掉
+        desiredCapabilities.setCapability("browserName", "");
+
+        //第三步：设置adb proxy
+        //通过自己的adb代理修复chromedriver的bug并解决@xweb_devtools_remote的问题
+        desiredCapabilities.setCapability("adbPort", "5038");
+
+        //加速
+        desiredCapabilities.setCapability("skipLogcatCapture", "true");
+        //用于快速测试
+//        desiredCapabilities.setCapability("dontStopAppOnReset", "true");
         //完善的版本选择方案，不过会优先找android webview默认实现
 //        desiredCapabilities.setCapability("chromedriverExecutableDir",
 //                "/Users/seveniruby/projects/chromedriver/chromedrivers");
@@ -77,7 +93,7 @@ public class WeiXinTest {
         });
 
         String webview = driver.getContextHandles().stream()
-                .filter(context->context.toString().contains("WEBVIEW_xweb")).findFirst().get().toString();
+                .filter(context -> context.toString().contains("WEBVIEW_xweb")).findFirst().get().toString();
         System.out.println(webview);
         driver.context(webview);
 
